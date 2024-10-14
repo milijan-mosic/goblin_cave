@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/milijan-mosic/goblin_cave/src/controllers/home"
+	"github.com/milijan-mosic/goblin_cave/controllers/home"
 )
 
 func main() {

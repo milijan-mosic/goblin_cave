@@ -1,6 +1,6 @@
 FROM golang:1.23-alpine AS builder
 
-WORKDIR /app
+WORKDIR /build
 
 COPY go.mod ./
 RUN go mod download
@@ -8,14 +8,14 @@ RUN go mod download
 RUN go install github.com/air-verse/air@latest
 RUN go mod tidy
 
-FROM alpine:latest
+FROM golang:1.23-alpine
 
-WORKDIR /app
+WORKDIR /code
 
 COPY . .
 
 COPY --from=builder /go/bin/air /usr/local/bin/air
-COPY --from=builder /app /app
+COPY --from=builder /build /code
 
 EXPOSE 10000
-CMD ["air", "server", "--port", "10000", "-c", "src/air.toml"]
+CMD ["air", "server", "--port", "10000"]

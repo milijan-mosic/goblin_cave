@@ -3,7 +3,7 @@ package home
 import (
 	"net/http"
 
-	"github.com/milijan-mosic/goblin_cave/src/utils"
+	"github.com/milijan-mosic/goblin_cave/utils"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
