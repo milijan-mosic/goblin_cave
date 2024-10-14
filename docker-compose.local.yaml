@@ -50,19 +50,20 @@ services:
       - local
     command: start-dev --proxy-headers forwarded --hostname https://auth.goblin.local/
 
-  # pgadmin:
-  #   image: dpage/pgadmin4:latest
-  #   restart: always
-  #   depends_on:
-  #     - caddy
-  #     - postgres
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: admin@goblin.com
-  #     PGADMIN_DEFAULT_PASSWORD: admin
-  #   volumes:
-  #     - ./pgadmin_data:/var/lib/pgadmin
-  #   networks:
-  #     - local
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    depends_on:
+      - caddy
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@goblin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - ./pgadmin_data:/var/lib/pgadmin
+    user: "$UID:$GID"
+    networks:
+      - local
 
   app:
     image: goblin_cave_app:latest
