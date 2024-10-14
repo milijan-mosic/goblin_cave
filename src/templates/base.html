@@ -1,0 +1,35 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ .Title }}</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/static/css/base.css" rel="stylesheet" />
+  </head>
+  <body class="font-poppins bg-black">
+    <header class="p-6 bg-gray-800 text-white">
+      <h1 class="text-3xl">{{ .Title }}</h1>
+    </header>
+
+    <main class="mx-auto p-6 bg-gray-200 w-full">
+      {{ template "content" . }}
+    </main>
+
+    <footer class="p-6 bg-gray-900 text-white">
+      <p class="text-center">© 2024 Your Company</p>
+    </footer>
+
+    <script defer src="/static/js/base.js"></script>
+  </body>
+</html>
+{{ end }}
