@@ -1,0 +1,89 @@
+services:
+  caddy:
+    image: caddy:2.7.6-alpine
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./caddy/local.Caddyfile:/etc/caddy/Caddyfile
+    networks:
+      - local
+
+  postgres:
+    image: postgres:16.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app_db
+    depends_on:
+      - caddy
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - local
+
+  auth:
+    image: quay.io/keycloak/keycloak:latest
+    restart: always
+    environment:
+      - KC_HOSTNAME_PORT=8080
+      - KC_HEALTH_ENABLED=true
+      - KC_HOSTNAME_STRICT_BACKCHANNEL=false
+      - KC_HTTP_ENABLED=true
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=password
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/app_db
+      - KC_DB_USERNAME=admin
+      - KC_DB_PASSWORD=password
+    depends_on:
+      - caddy
+      - postgres
+    ports:
+      - 8080:8080
+    networks:
+      - local
+    command: start-dev --proxy-headers forwarded --hostname https://auth.goblin.local/
+
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   restart: always
+  #   depends_on:
+  #     - caddy
+  #     - postgres
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@goblin.com
+  #     PGADMIN_DEFAULT_PASSWORD: admin
+  #   volumes:
+  #     - ./pgadmin_data:/var/lib/pgadmin
+  #   networks:
+  #     - local
+
+  app:
+    image: goblin_cave_app:latest
+    restart: always
+    build:
+      context: ./app
+      dockerfile: images/local.Dockerfile
+    depends_on:
+      - caddy
+      - postgres
+      - auth
+    ports:
+      - 10000:10000
+    volumes:
+      - ./app:/app
+    networks:
+      - local
+
+networks:
+  local:
+
+volumes:
+  postgres_data:
+  pgadmin_data:

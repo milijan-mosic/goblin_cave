@@ -1,0 +1,23 @@
+app.goblin.local {
+    tls internal
+
+    handle {
+        reverse_proxy app:10000
+    }
+}
+
+auth.goblin.local {
+    tls internal
+
+    handle {
+        reverse_proxy auth:8080
+    }
+}
+
+pgadmin.goblin.local {
+    tls internal
+
+    handle {
+        reverse_proxy pgadmin:80
+    }
+}
