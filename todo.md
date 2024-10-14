@@ -1,0 +1,3 @@
+- Fix serving of app
+- Fix setting up local admin: `root`, without passkey
+- Serve FontAwesome, Google Font, TailwindCSS locally.
