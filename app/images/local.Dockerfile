@@ -3,6 +3,7 @@ FROM golang:1.23-alpine AS builder
 WORKDIR /build
 
 COPY go.mod ./
+COPY go.sum ./
 RUN go mod download
 
 RUN go install github.com/air-verse/air@latest

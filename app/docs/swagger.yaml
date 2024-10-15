@@ -1,0 +1,28 @@
+basePath: /api/v1
+host: app.goblin.local
+info:
+  contact: {}
+  description: This is a sample API documentation.
+  title: API
+  version: "1.0"
+paths:
+  /test:
+    get:
+      description: Retrieves a user by their ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      summary: Get user by ID
+      tags:
+      - users
+swagger: "2.0"
